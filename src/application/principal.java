@@ -1,10 +1,16 @@
 package application;
 
-public class principal {
+import Xadrez.ChessMatch;
+import tabuleiro.Board;
+import tabuleiro.Position;
+
+public class Principal {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		ChessMatch chessMatch = new ChessMatch();
+		UI.printBoard(chessMatch.getPieces());
+		
 	}
 
 }
