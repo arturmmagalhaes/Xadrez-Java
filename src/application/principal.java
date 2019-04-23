@@ -1,14 +1,14 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import Xadrez.ChessException;
 import Xadrez.ChessMatch;
 import Xadrez.ChessPiece;
 import Xadrez.ChessPosition;
-import tabuleiro.Board;
-import tabuleiro.Position;
 
 public class Principal {
 
@@ -16,13 +16,14 @@ public class Principal {
 
 		Scanner sc = new Scanner(System.in);
 		ChessMatch chessMatch = new ChessMatch();
-	
-		while(true) {
+		List<ChessPiece> captured = new ArrayList<>();
+		
+		while(!chessMatch.getCheckMate()) {
 			try {
 				UI.cleanScreen();
-				UI.printBoard(chessMatch.getPieces());
+				UI.printMatch(chessMatch, captured);
 				System.out.println();
-				System.out.println("Source: ");
+				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(sc);
 				
 				boolean[][] possibleMoves = chessMatch.possibleMoves(source);
@@ -30,10 +31,14 @@ public class Principal {
 				UI.printBoard(chessMatch.getPieces(), possibleMoves);
 				
 				System.out.println();
-				System.out.println("Target: ");
+				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(sc);
 			
 				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
+				if(capturedPiece != null) {
+					captured.add(capturedPiece);
+				}
+				
 			}
 			catch(ChessException e) {
 				System.out.println(e.getMessage());
@@ -44,5 +49,7 @@ public class Principal {
 				sc.nextLine();
 			}
 		}
+		UI.cleanScreen();
+		UI.printMatch(chessMatch, captured);
 	}
 }
